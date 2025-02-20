@@ -5,9 +5,9 @@ import { userSchema } from "../../prisma/schema/user.schema";
 
 export const registerUser = async (req: Request, res: Response) => {
   try {
-    const result = userSchema.safeParse(req.body);
-    if (!result.success) {
-      throw new Error(`${result.error}`);
+    const { error } = userSchema.validate(req.body);
+    if (error) {
+      throw new Error(`${error}`);
     }
     const { email, password } = req.body;
 

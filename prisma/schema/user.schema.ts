@@ -1,6 +1,6 @@
-import { z } from "zod";
+import Joi from "joi";
 
-export const userSchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
+export const userSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().required(),
 });
