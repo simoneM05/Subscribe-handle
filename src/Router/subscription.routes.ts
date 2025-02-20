@@ -7,14 +7,15 @@ import {
   deleteSub,
   statsSub,
 } from "../controller/subscription.controller";
+import { authToken } from "../middleware/authTokenJwt";
 
 const router = Router();
 
-router.post("/addSub", addSub);
-router.get("/getSubs", getSubs);
-router.get("/getSub", getSub);
-router.put("/editSub", editSub);
-router.delete("/deleteSub", deleteSub);
-router.get("/statsSub", statsSub);
+router.post("/addSub", authToken, addSub);
+router.get("/getSubs", authToken, getSubs);
+router.get("/getSub", authToken, getSub);
+router.put("/editSub", authToken, editSub);
+router.delete("/deleteSub", authToken, deleteSub);
+router.get("/statsSub", authToken, statsSub);
 
 export default router;
