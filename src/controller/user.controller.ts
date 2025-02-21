@@ -1,11 +1,15 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { createUser, getUser } from "../repositories/userRepository";
 import { ApiError } from "../error/apiError";
 import { generateToken } from "../utils/generateToken";
 import { bodyValidate } from "../utils/joiValidateBody";
 
-export const registerUser = async (req: Request, res: Response) => {
+export const registerUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = bodyValidate(req.body); //validate body
     if (result instanceof ApiError) {
@@ -20,16 +24,14 @@ export const registerUser = async (req: Request, res: Response) => {
     }
     res.status(201).json(user);
   } catch (error: unknown) {
-    if (error instanceof ApiError) {
-      res.status(error.statusCode).json(error.message);
-    } else if (error instanceof Error) {
-      res.status(500).json({ error: error.message }); //system error
-    } else {
-      res.status(500).json({ error: "internal server error" }); //generic error
-    }
+    next(error);
   }
 };
-export const loginUser = async (req: Request, res: Response) => {
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const result = bodyValidate(req.body);
     if (result instanceof ApiError) {
@@ -48,14 +50,17 @@ export const loginUser = async (req: Request, res: Response) => {
       throw new ApiError("Invalid credentials", 400); //pasword not valid
     }
   } catch (error: unknown) {
-    if (error instanceof ApiError) {
-      res.status(error.statusCode).json({ error: error.message });
-    } else if (error instanceof Error) {
-      res.status(500).json({ error: error.message }); //system error
-    } else {
-      res.status(500).json({ error: "internal server error" }); //generic error
-    }
+    next(error);
   }
 };
 
-export const logoutUser = async (req: Request, res: Response) => {}; //TODO
+export const logoutUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+  } catch (error: unknown) {
+    next(error);
+  }
+};
