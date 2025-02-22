@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { createUser, getUser } from "../repositories/userRepository";
 import { ApiError } from "../error/apiError";
-import { generateToken } from "../utils/generateToken";
+import { generateToken, getEXToken } from "../utils/generateToken";
 import { bodyValidate } from "../utils/joiValidateBody";
+import redisClient from "../config/redis";
 
 export const registerUser = async (
   req: Request,
@@ -59,6 +60,10 @@ export const logoutUser = async (
   res: Response,
   next: NextFunction
 ) => {
+  const { token } = req.body;
+  const exp = getEXToken(token);
+  if (exp) await redisClient.set(`blacklist:${token}`, token, { EX: exp }); //add token at blacklist
+  res.sendStatus(200);
   try {
   } catch (error: unknown) {
     next(error);

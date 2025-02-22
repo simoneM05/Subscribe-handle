@@ -4,12 +4,10 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import UserRoutes from "./Router/user.routes";
 import { errorHandler } from "./middleware/errorHandler";
-import "./config/redis";// connect at redis client 
-
-dotenv.config;
+import "./config/redis"; // connect at redis client
+import { PORT } from "./config/config";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(helmet());
