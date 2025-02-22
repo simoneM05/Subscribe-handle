@@ -12,7 +12,10 @@ export async function createUser(email: string, password: string) {
   }
 }
 
-export async function getUsers(skip: number, take: number) {} //use pagination prisma.user.findMany({ skip, take });
+export async function getUsers(skip: number, take: number) {
+  const users = await prisma.user.findMany({ skip, take });
+  return users;
+} //TODO //use pagination prisma.user.findMany({ skip, take });
 export async function getUser(data: Partial<{ email: string; id: string }>) {
   const user = data.email
     ? await prisma.user.findUnique({ where: { email: data.email } })
