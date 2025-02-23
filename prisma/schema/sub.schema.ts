@@ -10,5 +10,4 @@ export const SubSchema = Joi.object({
       Joi.string().pattern(/^\d+\s(years?|months?|weeks?)$/) // e.g., "2 years", "3 months"
     )
     .required(),
-  userId: Joi.string().required(),
 });

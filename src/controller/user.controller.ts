@@ -3,12 +3,12 @@ import bcrypt from "bcrypt";
 import { createUser, getUser } from "../repositories/user.Repository";
 import { ApiError } from "../error/apiError";
 import { generateToken, getEXToken } from "../utils/generateToken";
-import { bodyValidate } from "../utils/joiValidateBody";
+import { bodyValidateUser } from "../utils/joiValidateBody";
 import redisClient from "../config/redis";
 
 export const registerUser: RequestHandler = async (req, res, next) => {
   try {
-    const result = bodyValidate(req.body); //validate body
+    const result = bodyValidateUser(req.body); //validate body
     if (result instanceof ApiError) {
       throw result;
     }
@@ -26,7 +26,7 @@ export const registerUser: RequestHandler = async (req, res, next) => {
 };
 export const loginUser: RequestHandler = async (req, res, next) => {
   try {
-    const result = bodyValidate(req.body);
+    const result = bodyValidateUser(req.body);
     if (result instanceof ApiError) {
       throw result;
     }
@@ -57,5 +57,4 @@ export const logoutUser: RequestHandler = async (req, res, next) => {
   } catch (error: unknown) {
     next(error);
   }
-}
-
+};
