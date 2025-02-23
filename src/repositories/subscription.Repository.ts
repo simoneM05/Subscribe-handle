@@ -1,16 +1,21 @@
 import { prisma } from "../config/prisma";
 import { ApiError } from "../error/apiError";
 
-export async function SubUser(
+export async function createSub(
   name: string,
   price: number,
   renewal: string,
   type: string,
   userId: string
 ) {
-  return await prisma.sub.create({
-    data: { name, price, renewal, type, userId },
-  });
+  if (!(await prisma.sub.findUnique({ where: { name: name } }))) {
+    //search user for email because is uniqe
+    return await prisma.sub.create({
+      data: { name, price, renewal, type, userId },
+    });
+  } else {
+    return new ApiError("sub alredy exists", 403); //in case user is found return ApiError type
+  }
 }
 
 export async function getSubs(skip: number, take: number) {

@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import { JWT_SECRET } from "../config/config";
 import { ApiError } from "../error/apiError";
 import redisClient from "../config/redis";
@@ -11,14 +11,15 @@ export const authToken: RequestHandler = async (req, res, next) => {
       token = req.header("Authorization")!.split(" ")[1];
     }
     if (await redisClient.get(`blacklist:${token}`)) {
-      throw new ApiError("blacklist token", 401);
+      throw new ApiError("invalid token", 401); //in case token is in blacklist token is not valid
     }
     if (token) {
       jwt.verify(token, JWT_SECRET, (err, decoded) => {
+        //extract id of the token
         if (err) {
           throw new ApiError("invalid token", 401);
         } else {
-          req.body._id = decoded;
+          req.body._id = (decoded as JwtPayload & { _id: string })._id; //add _id in type JwtPayload
           req.body.token = token;
           next();
         }

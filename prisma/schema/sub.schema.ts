@@ -1,7 +1,9 @@
 import Joi from "joi";
 
 export const SubSchema = Joi.object({
-  name: Joi.string().email().required(),
+  _id: Joi.required(),
+  token: Joi.string().required(),
+  name: Joi.string().required(),
   price: Joi.number(),
   renewal: Joi.date().required(),
   type: Joi.alternatives()
