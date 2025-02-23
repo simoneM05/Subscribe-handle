@@ -23,8 +23,8 @@ model User {
 
 model Sub {
   id String @id @default(uuid())
-  name String 
-  cost Float
+  name String @unique
+  price Float
   renewal DateTime
   type String //mensile, annuale, ecc..
   userId String  //foreign key 

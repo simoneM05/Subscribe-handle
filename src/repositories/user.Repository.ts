@@ -1,17 +1,29 @@
 import { prisma } from "../config/prisma";
+import { ApiError } from "../error/apiError";
 
 export async function createUser(email: string, password: string) {
   if (!(await prisma.user.findUnique({ where: { email: email } }))) {
+    //search user for email because is uniqe
     return await prisma.user.create({
       data: { email, password },
     });
   } else {
-    return new Error("user alredy exists");
+    return new ApiError("user alredy exists", 403); //in case user is found return ApiError type
   }
 }
 
-export async function getUsers(skip: number, take: number) {} //use pagination prisma.user.findMany({ skip, take });
-export async function getUser(id: string) {}
+export async function getUsers(skip: number, take: number) {
+  const users = await prisma.user.findMany({ skip, take });
+  return users;
+}
+export async function getUser(data: Partial<{ email: string; id: string }>) {
+  const user = data.email
+    ? await prisma.user.findUnique({ where: { email: data.email } })
+    : data.id
+    ? await prisma.user.findUnique({ where: { id: data.id } })
+    : null;
+  return user;
+}
 
 export async function updateUser(
   id: string,

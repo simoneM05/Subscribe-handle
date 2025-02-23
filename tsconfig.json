@@ -4,6 +4,6 @@
     "outDir": "dist",
     "rootDir": "."
   },
-  "include": ["prisma", "src"],
+  "include": ["prisma", "src", "src/error/.ts"],
   "exclude": ["node_modules"]
 }
