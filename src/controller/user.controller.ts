@@ -57,4 +57,5 @@ export const logoutUser: RequestHandler = async (req, res, next) => {
   } catch (error: unknown) {
     next(error);
   }
-};
+}
+
