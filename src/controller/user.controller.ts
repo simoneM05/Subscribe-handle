@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, RequestHandler, Response } from "express";
 import bcrypt from "bcrypt";
 import { createUser, getUser } from "../repositories/user.Repository";
 import { ApiError } from "../error/apiError";
@@ -6,11 +6,7 @@ import { generateToken, getEXToken } from "../utils/generateToken";
 import { bodyValidate } from "../utils/joiValidateBody";
 import redisClient from "../config/redis";
 
-export const registerUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const registerUser: RequestHandler = async (req, res, next) => {
   try {
     const result = bodyValidate(req.body); //validate body
     if (result instanceof ApiError) {
@@ -28,11 +24,7 @@ export const registerUser = async (
     next(error);
   }
 };
-export const loginUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const loginUser: RequestHandler = async (req, res, next) => {
   try {
     const result = bodyValidate(req.body);
     if (result instanceof ApiError) {
@@ -54,17 +46,9 @@ export const loginUser = async (
     next(error);
   }
 };
-export const updateUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {};
+export const updateUser: RequestHandler = async (req, res, next) => {}; //TODO
 
-export const logoutUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const logoutUser: RequestHandler = async (req, res, next) => {
   const { token } = req.body;
   const exp = getEXToken(token);
   if (exp) await redisClient.set(`blacklist:${token}`, token, { EX: exp }); //add token at blacklist
