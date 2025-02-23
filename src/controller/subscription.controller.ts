@@ -1,13 +1,45 @@
-import { Request, Response } from "express";
+import { RequestHandler } from "express";
+import { nextTick } from "process";
 
-export const addSub = async (req: Request, res: Response) => {}; //TODO
+export const addSub: RequestHandler = async (req, res, next) => {
+  try {
+    
+  } catch (error) {
+    next(error);
+  }
+}; //TODO
 
-export const getSubs = async (req: Request, res: Response) => {}; //TODO
+export const getSubs: RequestHandler = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+}; //TODO
 
-export const getSub = async (req: Request, res: Response) => {}; //TODO
+export const getSub: RequestHandler = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+}; //TODO
 
-export const deleteSub = async (req: Request, res: Response) => {}; //TODO
+export const deleteSub: RequestHandler = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+}; //TODO
 
-export const editSub = async (req: Request, res: Response) => {}; //TODO
+export const editSub: RequestHandler = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+}; //TODO
 
-export const statsSub = async (req: Request, res: Response) => {}; //TODO
+export const statsSub: RequestHandler = async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
+}; //TODO

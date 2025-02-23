@@ -13,22 +13,23 @@ export async function SubUser(
   });
 }
 
-export async function getUsers(skip: number, take: number) {
-  const users = await prisma.user.findMany({ skip, take });
-  return users;
+export async function getSubs(skip: number, take: number) {
+  const sub = await prisma.sub.findMany({ skip, take });
+  return sub;
 }
 
 export async function getSub(data: Partial<{ name: string; id: string }>) {
-  const user = data.name
-    ? await prisma.user.findUnique({ where: { email: data.name } })
+  const sub = data.name
+    ? await prisma.sub.findUnique({ where: { name: data.name } })
     : data.id
-    ? await prisma.user.findUnique({ where: { id: data.id } })
+    ? await prisma.sub.findUnique({ where: { id: data.id } })
     : null;
-  return user;
+  return sub;
 }
 
 export async function updateSub(
   id: string,
+  UserId: string,
   update: Partial<{
     name: string;
     price: number;
@@ -43,8 +44,8 @@ export async function updateSub(
   if (Object.keys(filtredUpdate).length === 0) {
     throw new ApiError("Nessum campo valido da aggiornare", 400);
   }
-  return await prisma.user.update({
-    where: { id },
+  return await prisma.sub.update({
+    where: { id: id, userId: UserId },
     data: filtredUpdate,
   });
 }
