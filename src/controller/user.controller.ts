@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { createUser, getUser } from "../repositories/userRepository";
+import { createUser, getUser } from "../repositories/user.Repository";
 import { ApiError } from "../error/apiError";
 import { generateToken, getEXToken } from "../utils/generateToken";
 import { bodyValidate } from "../utils/joiValidateBody";
@@ -54,6 +54,11 @@ export const loginUser = async (
     next(error);
   }
 };
+export const updateUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {};
 
 export const logoutUser = async (
   req: Request,
