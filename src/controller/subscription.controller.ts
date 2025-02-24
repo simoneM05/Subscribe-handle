@@ -59,7 +59,8 @@ export const deleteSub: RequestHandler = async (req, res, next) => {
     const { id } = req.params;
     const { userId } = req.body;
     const subDelete = await deleteSubOne(id, userId);
-    if (subDelete) res.status(200).json("sub deleted");
+    if (subDelete instanceof ApiError) throw subDelete;
+    res.status(200).json("sub deleted");
   } catch (error) {
     next(error);
   }

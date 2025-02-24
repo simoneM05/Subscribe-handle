@@ -21,7 +21,7 @@ export async function createSub(
   type: string,
   userId: string
 ) {
-  const existringSub = getSubOne(userId, { name });
+  const existringSub = await getSubOne(userId, { name });
   if (!existringSub) {
     //search user for email because is uniqe
     return await prisma.sub.create({
@@ -43,7 +43,6 @@ export async function getSubsPagination(
     take, //how many subs take
     orderBy: { createAt: "asc" },
   });
-  console.log("Filtering subs for userId:", userId);
   const total = await prisma.sub.count({ where: { userId } }); // count total subs
 
   return { subs, total };
@@ -61,7 +60,7 @@ export async function updateSub(
   if (Object.keys(filtredUpdate).length === 0) {
     return new ApiError("Nessum campo valido da aggiornare", 400);
   }
-  const editSub = getSubOne(userId, { id });
+  const editSub = await getSubOne(userId, { id });
   if (!editSub) {
     return new ApiError("sub not found", 404);
   }
@@ -73,8 +72,8 @@ export async function updateSub(
 }
 
 export async function deleteSubOne(id: string, userId: string) {
-  const editSub = getSubOne(userId, { id });
-  if (!editSub) {
+  const deleteSubs = await getSubOne(userId, { id }); //use getSubOne for check if exists
+  if (!deleteSubs) {
     return new ApiError("sub not found", 404);
   }
   return await prisma.sub.delete({
