@@ -1,8 +1,6 @@
-# To-Do List API
+# Sub-Handle List API
 
-**Project URL:** [To-Do List API](http://localhost:PORTSimone-Martino/ToDo)
-
-Questa API consente di gestire un'applicazione To-Do List, con funzionalità per:
+Questa API consente di gestire un'applicazione List, con funzionalità per:
 
 - Creare un utente, effettuare il login con credenziali valide e generare un token per l'autenticazione.
 - Gestire le attività di un utente autenticato: creazione, lettura, aggiornamento ed eliminazione.

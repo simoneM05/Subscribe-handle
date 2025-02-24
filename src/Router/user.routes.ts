@@ -5,6 +5,7 @@ import {
   registerUser,
 } from "../controller/user.controller";
 import { authToken } from "../middleware/authTokenJwt";
+import { errorHandler } from "../middleware/errorHandler";
 
 const router = Router();
 

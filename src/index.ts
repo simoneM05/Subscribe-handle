@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import dotenv from "dotenv";
 import UserRoutes from "./Router/user.routes";
+import SubRoutes from "./Router/subscription.routes";
 import { errorHandler } from "./middleware/errorHandler";
 import "./config/redis"; // connect at redis client
 import { PORT } from "./config/config";
@@ -14,6 +14,7 @@ app.use(helmet());
 app.use(cors());
 
 app.use("/api/users", UserRoutes);
+app.use("/api/subs", SubRoutes);
 app.use(errorHandler);
 
 app.get("/", (req, res) => {
