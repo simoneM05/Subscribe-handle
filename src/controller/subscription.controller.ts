@@ -84,7 +84,7 @@ export const editSub: RequestHandler = async (req, res, next) => {
   }
 }; //TODO
 
-export const statsSub: RequestHandler = async (req, res, next) => {
+export const statusSub: RequestHandler = async (req, res, next) => {
   try {
   } catch (error) {
     next(error);
