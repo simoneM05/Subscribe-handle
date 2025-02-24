@@ -3,6 +3,7 @@ import { bodyValidateSub } from "../error/joiValidateBody";
 import { ApiError } from "../error/apiError";
 import {
   createSub,
+  deleteSubOne,
   getSubOne,
   getSubsPagination,
   updateSub,
@@ -55,10 +56,14 @@ export const getSub: RequestHandler = async (req, res, next) => {
 
 export const deleteSub: RequestHandler = async (req, res, next) => {
   try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    const subDelete = await deleteSubOne(id, userId);
+    if (subDelete) res.status(200).json("sub deleted");
   } catch (error) {
     next(error);
   }
-}; //TODO
+};
 
 export const editSub: RequestHandler = async (req, res, next) => {
   try {
@@ -82,11 +87,16 @@ export const editSub: RequestHandler = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}; //TODO
+};
 
 export const statusSub: RequestHandler = async (req, res, next) => {
   try {
+    const { id } = req.params;
+    const { userId } = req.body;
+    const statusSub = await getSubOne(id, userId);
+    if (statusSub instanceof ApiError) res.status(200).json("sub deleted");
+    res.status(200).json({ status: statusSub?.renewal });
   } catch (error) {
     next(error);
   }
-}; //TODO
+};

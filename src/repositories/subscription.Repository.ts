@@ -2,6 +2,18 @@ import { prisma } from "../config/prisma";
 import { ApiError } from "../error/apiError";
 import { SubI } from "../interface/SubI";
 
+export async function getSubOne(
+  userId: string,
+  data: Partial<{ name: string; id: string }>
+) {
+  const sub = data.name
+    ? await prisma.sub.findFirst({ where: { name: data.name, userId } })
+    : data.id
+    ? await prisma.sub.findUnique({ where: { id: data.id, userId } })
+    : null;
+  return sub;
+}
+
 export async function createSub(
   name: string,
   price: number,
@@ -9,9 +21,7 @@ export async function createSub(
   type: string,
   userId: string
 ) {
-  const existringSub = await prisma.sub.findFirst({
-    where: { name, userId },
-  });
+  const existringSub = getSubOne(userId, { name });
   if (!existringSub) {
     //search user for email because is uniqe
     return await prisma.sub.create({
@@ -39,18 +49,6 @@ export async function getSubsPagination(
   return { subs, total };
 }
 
-export async function getSubOne(
-  userId: string,
-  data: Partial<{ name: string; id: string }>
-) {
-  const sub = data.name
-    ? await prisma.sub.findFirst({ where: { name: data.name, userId } })
-    : data.id
-    ? await prisma.sub.findUnique({ where: { id: data.id, userId } })
-    : null;
-  return sub;
-}
-
 export async function updateSub(
   id: string,
   userId: string,
@@ -63,7 +61,7 @@ export async function updateSub(
   if (Object.keys(filtredUpdate).length === 0) {
     return new ApiError("Nessum campo valido da aggiornare", 400);
   }
-  const editSub = await prisma.sub.findFirst({ where: { id } });
+  const editSub = getSubOne(userId, { id });
   if (!editSub) {
     return new ApiError("sub not found", 404);
   }
@@ -72,4 +70,14 @@ export async function updateSub(
     data: filtredUpdate,
   });
   return updateSub;
+}
+
+export async function deleteSubOne(id: string, userId: string) {
+  const editSub = getSubOne(userId, { id });
+  if (!editSub) {
+    return new ApiError("sub not found", 404);
+  }
+  return await prisma.sub.delete({
+    where: { id },
+  });
 }
