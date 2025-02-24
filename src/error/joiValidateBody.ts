@@ -1,4 +1,4 @@
-import { SubSchema } from "../../prisma/schema/sub.schema";
+import { SubSchema, SubSchemaEdit } from "../../prisma/schema/sub.schema";
 import { userSchema } from "../../prisma/schema/user.schema";
 import { ApiError } from "../error/apiError";
 
@@ -24,6 +24,14 @@ export const bodyValidateSub = (body: BodySub) => {
 };
 export const bodyValidateUser = (body: BodyUser) => {
   const { error } = userSchema.validate(body);
+  if (error) {
+    return new ApiError(`${error}`, 400);
+  }
+  return null;
+};
+
+export const bodyValidateSubEdit = (body: BodySub) => {
+  const { error } = SubSchemaEdit.validate(body);
   if (error) {
     return new ApiError(`${error}`, 400);
   }

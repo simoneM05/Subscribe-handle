@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { createUser, getUser } from "../repositories/user.Repository";
 import { ApiError } from "../error/apiError";
 import { generateToken, getEXToken } from "../utils/generateToken";
-import { bodyValidateUser } from "../utils/joiValidateBody";
+import { bodyValidateUser } from "../error/joiValidateBody";
 import redisClient from "../config/redis";
 
 export const registerUser: RequestHandler = async (req, res, next) => {
