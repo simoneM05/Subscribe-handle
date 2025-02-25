@@ -12,6 +12,7 @@ export type BodySub = {
   name: string;
   price: number;
   type: string;
+  active: boolean;
   renewal: Date;
 };
 

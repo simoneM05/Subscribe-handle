@@ -23,6 +23,7 @@ model User {
 
 model Sub {
   id String @id @default(uuid())
+  active Boolean @default(false)
   name String 
   price Float
   renewal DateTime

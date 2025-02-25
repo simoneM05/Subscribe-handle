@@ -2,6 +2,7 @@ import Joi from "joi";
 
 export const SubSchema = Joi.object({
   _id: Joi.required(),
+  active: Joi.boolean(),
   token: Joi.string().required(),
   name: Joi.string().required(),
   price: Joi.number(),
@@ -23,4 +24,5 @@ export const SubSchemaEdit = Joi.object({
     Joi.string().valid("monthly", "yearly", "weekly"),
     Joi.string().pattern(/^\d+\s(years?|months?|weeks?)$/) // e.g., "2 years", "3 months"
   ),
+  active: Joi.boolean(),
 });

@@ -7,7 +7,7 @@ import { errorHandler } from "./middleware/errorHandler";
 import "./config/redis"; // connect at redis client
 import { PORT } from "./config/config";
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 app.use(helmet());

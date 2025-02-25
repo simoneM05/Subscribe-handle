@@ -14,18 +14,19 @@ export async function getSubOne(
   return sub;
 }
 
-export async function createSub(
-  name: string,
-  price: number,
-  renewal: string,
-  type: string,
-  userId: string
-) {
-  const existringSub = await getSubOne(userId, { name });
+export async function createSub(data: SubI, userId: string) {
+  const existringSub = await getSubOne(userId, { name: data.name });
   if (!existringSub) {
     //search user for email because is uniqe
     return await prisma.sub.create({
-      data: { name, price, renewal, type, userId },
+      data: {
+        name: data.name!,
+        price: data.price!,
+        renewal: data.renewal!,
+        type: data.type!,
+        userId: userId,
+        active: data.active,
+      },
     });
   } else {
     return new ApiError("sub alredy exists", 403); //in case user is found return ApiError type

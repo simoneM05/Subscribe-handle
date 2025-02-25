@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { bodyValidateSub } from "../error/joiValidateBody";
+import { bodyValidateSub, bodyValidateSubEdit } from "../error/joiValidateBody";
 import { ApiError } from "../error/apiError";
 import {
   createSub,
@@ -16,8 +16,8 @@ export const addSub: RequestHandler = async (req, res, next) => {
     if (result instanceof ApiError) {
       throw result;
     }
-    const { name, price, renewal, type, _id } = req.body;
-    const sub = await createSub(name, price, renewal, type, _id);
+    const { name, price, renewal, type, _id, active } = req.body;
+    const sub = await createSub({ name, price, renewal, type, active }, _id);
     if (sub instanceof ApiError) {
       throw sub; //return ApiError generate by function createUser
     }
@@ -60,7 +60,7 @@ export const deleteSub: RequestHandler = async (req, res, next) => {
     const { userId } = req.body;
     const subDelete = await deleteSubOne(id, userId);
     if (subDelete instanceof ApiError) throw subDelete;
-    res.status(200).json("sub deleted");
+    res.status(200).json(subDelete);
   } catch (error) {
     next(error);
   }
@@ -68,35 +68,24 @@ export const deleteSub: RequestHandler = async (req, res, next) => {
 
 export const editSub: RequestHandler = async (req, res, next) => {
   try {
-    const result = bodyValidateSub(req.body); //validate body
+    const result = bodyValidateSubEdit(req.body); //validate body
     if (result instanceof ApiError) {
       throw result;
     }
     const { id } = req.params;
-    const { name, price, renewal, type, _id: userId } = req.body;
+    const { name, price, renewal, type, _id: userId, active } = req.body;
     const update: SubI = {};
     if (name) update.name = name;
     if (price) update.price = price;
     if (renewal) update.renewal = renewal;
     if (type) update.type = type;
+    if (active !== undefined) update.active = active; //use undefine because active is boolena, case active false if return false
 
     const editSub = await updateSub(id, userId, update);
     if (editSub instanceof ApiError) {
       throw editSub;
     }
     res.status(201).json(editSub);
-  } catch (error) {
-    next(error);
-  }
-};
-
-export const statusSub: RequestHandler = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { userId } = req.body;
-    const statusSub = await getSubOne(id, userId);
-    if (statusSub instanceof ApiError) res.status(200).json("sub deleted");
-    res.status(200).json({ status: statusSub?.renewal });
   } catch (error) {
     next(error);
   }

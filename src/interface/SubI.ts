@@ -3,4 +3,5 @@ export interface SubI {
   price?: number;
   renewal?: string;
   type?: string;
+  active?: boolean;
 }
