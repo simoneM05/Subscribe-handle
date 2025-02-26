@@ -6,12 +6,15 @@ import SubRoutes from "./Router/subscription.routes";
 import { errorHandler } from "./middleware/errorHandler";
 import "./config/redis"; // connect at redis client
 import { PORT } from "./config/config";
+import morgan from "morgan";
+import { logStream } from "./services/log.service";
 
 export const app = express();
 
 app.use(express.json());
 app.use(helmet());
 app.use(cors());
+app.use(morgan("combined", { stream: logStream }));
 
 app.use("/api/users", UserRoutes);
 app.use("/api/subs", SubRoutes);
