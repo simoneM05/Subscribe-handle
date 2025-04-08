@@ -15,6 +15,7 @@
     "prisma": "^6.3.1",
     "redis": "^4.7.0",
     "supertest": "^7.0.0"
+    "express-rate-limit": "^5.6.0"
   },
   "scripts": {
     "build": "tsc",
